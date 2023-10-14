@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment_09</title>
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <style>
+        main {
+            height: 100vh;
+            position: relative;
+            background: black;
+        }
+
+        main > span {
+            width: fit-content;
+            height: fit-content;
+            font-size: 25px;
+            color: red;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 300px;
+            margin: auto;
+
+        }
+
+        .line01 {
+
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 250px;
+            width: 600px;
+            background: white;
+            height: 1px;
+            margin: auto;
+        }
+
+        .line02 {
+
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 600px;
+            background: white;
+            height: 1px;
+            margin: auto;
+        }
+
+        #startButton {
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            left: 0;
+            right: 200px;
+            top: 100PX;
+            bottom: 0;
+            margin: auto;
+        }
+
+        #stopButton {
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            left: 200px;
+            right: 0;
+            top: 100px;
+            bottom: 0;
+            margin: auto;
+        }
+
+        #lightPanel {
+            width: fit-content;
+            height: fit-content;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 120px;
+            top: 0;
+            margin: auto;
+        }
+
+        #lightPanel > div {
+            width: 100px;
+            height: 50px;
+            border: 1px solid white;
+            display: inline-block;
+
+        }
+    </style>
+</head>
+<body>
+<main>
+
+
+    <span>JavaScript Knight Rider</span>
+
+    <div class="line01"></div>
+    <div class="line02"></div>
+
+    <section id="lightPanel">
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+    </section>
+
+    <section id="buttonPanel">
+        <button id="startButton" type="button">Start</button>
+        <button id="stopButton" type="button">Stop</button>
+    </section>
+
+</main>
+<audio src="src/assets/sound/audio.mp3" id="audio"></audio>
+
+<script src="assets/lib/jquery.min.js"></script>
+
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    var current_light = -1;
+    var light_count = 6;
+    var current_direction = "RIGHT";
+    var intervalId = null;
+
+
+    const updateLight = () => {
+
+        $(".light").css("background", "black");
+
+        if (current_direction === "RIGHT") {
+            current_light++;
+            $(".light").eq(current_light).css("background", "red");
+            if (current_light > 0) {
+                $(".light").eq(current_light - 1).css("background", "#ffb3b3");
+            }
+            if (current_light === light_count - 1) {
+                current_direction = "LEFT";
+            }
+
+        } else {
+            current_light--;
+            $(".light").eq(current_light).css("background", "red");
+            $(".light").eq(current_light + 1).css("background", "#ffb3b3");
+            if (current_light == 0) {
+                current_direction = "RIGHT";
+
+            }
+
+        }
+    }
+
+
+    $('#startButton').on('click', () => {
+
+        if (intervalId == null) {
+            intervalId = setInterval(updateLight, 100);
+            $('audio')[0].play();
+        }
+
+    });
+
+    $('#stopButton').on('click', () => {
+
+        clearInterval(intervalId);
+        intervalId = null;
+        $('audio')[0].pause();
+
+    });
+</script>
+</body>
+</html>
